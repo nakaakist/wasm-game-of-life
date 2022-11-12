@@ -24,6 +24,7 @@ pub struct Universe {
     cells: Vec<Cell>,
 }
 
+#[wasm_bindgen]
 impl Universe {
     pub fn new() -> Universe {
         let width = 64;
@@ -70,6 +71,10 @@ impl Universe {
         self.cells = next;
     }
 
+    pub fn render(&self) -> String {
+        self.to_string()
+    }
+
     fn get_index(&self, row: u32, column: u32) -> usize {
         (row * self.width + column) as usize
     }
@@ -81,7 +86,8 @@ impl Universe {
                 if i == 0 && j == 0 {
                     continue;
                 }
-                let c = self.cells[self.get_index(row + i % self.height, column + j % self.width)];
+                let c =
+                    self.cells[self.get_index((row + i) % self.height, (column + j) % self.width)];
                 cnt += c as u8;
             }
         }
