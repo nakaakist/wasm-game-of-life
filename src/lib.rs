@@ -35,7 +35,7 @@ pub struct Universe {
 
 #[wasm_bindgen]
 impl Universe {
-    pub fn new() -> Universe {
+    pub fn new(alive_ratio: f64) -> Universe {
         utils::set_panic_hook();
 
         let width = 64;
@@ -44,7 +44,7 @@ impl Universe {
         let cells = (0..width * height)
             .map(|_| {
                 let r = js_sys::Math::random();
-                if r < 0.5 {
+                if r < alive_ratio {
                     Cell::Alive
                 } else {
                     Cell::Dead

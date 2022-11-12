@@ -1,12 +1,54 @@
 import { Cell, Universe } from "wasm-game-of-life";
 import { memory } from "wasm-game-of-life/wasm_game_of_life_bg";
 
+// variables;
 const CELL_SIZE = 5; // px
 const GRID_COLOR = "#CCCCCC";
 const DEAD_COLOR = "#FFFFFF";
 const ALIVE_COLOR = "#000000";
+let animationId = null;
+let universe = null;
 
-const universe = Universe.new();
+// initialize ratio control
+const initializeRatioInput = document.getElementById("initialize-ratio");
+
+const initializeRatio = () => parseInt(initializeRatioInput.value) / 100;
+
+// initialize button
+const initializeButton = document.getElementById("initialize");
+
+initializeButton.addEventListener("click", (event) => {
+  universe = Universe.new(initializeRatio());
+  drawGrid();
+  drawCells();
+});
+
+// play/pause control
+const playPauseButton = document.getElementById("play-pause");
+
+const isPaused = () => animationId === null;
+
+const play = () => {
+  playPauseButton.textContent = "⏸";
+  renderLoop();
+};
+
+const pause = () => {
+  playPauseButton.textContent = "▶";
+  cancelAnimationFrame(animationId);
+  animationId = null;
+};
+
+playPauseButton.addEventListener("click", (event) => {
+  if (isPaused()) {
+    play();
+  } else {
+    pause();
+  }
+});
+
+// draw canvas
+universe = Universe.new(initializeRatio());
 const width = universe.width();
 const height = universe.height();
 
@@ -78,31 +120,6 @@ canvas.addEventListener("click", (event) => {
 
   drawGrid();
   drawCells();
-});
-
-let animationId = null;
-
-const isPaused = () => animationId === null;
-
-const playPauseButton = document.getElementById("play-pause");
-
-const play = () => {
-  playPauseButton.textContent = "⏸";
-  renderLoop();
-};
-
-const pause = () => {
-  playPauseButton.textContent = "▶";
-  cancelAnimationFrame(animationId);
-  animationId = null;
-};
-
-playPauseButton.addEventListener("click", (event) => {
-  if (isPaused()) {
-    play();
-  } else {
-    pause();
-  }
 });
 
 const renderLoop = () => {
