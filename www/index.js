@@ -2,7 +2,7 @@ import { Cell, Universe } from "wasm-game-of-life";
 import { memory } from "wasm-game-of-life/wasm_game_of_life_bg";
 
 // variables;
-const CELL_SIZE = 5; // px
+const CELL_SIZE = 3; // px
 const GRID_COLOR = "#CCCCCC";
 const DEAD_COLOR = "#FFFFFF";
 const ALIVE_COLOR = "#000000";
@@ -165,7 +165,9 @@ max of last 100 = ${Math.round(max)}
 const renderLoop = () => {
   fps.render();
 
-  universe.tick();
+  for (let i = 0; i < 50; i++) {
+    universe.tick();
+  }
 
   drawGrid();
   drawCells();
