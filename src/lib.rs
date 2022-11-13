@@ -122,13 +122,26 @@ impl Universe {
 
     fn live_neighbor_count(&self, row: u32, column: u32) -> u8 {
         let mut cnt = 0;
-        for i in [self.height - 1, 0, 1].iter().cloned() {
-            for j in [self.width - 1, 0, 1].iter().cloned() {
-                if i == 0 && j == 0 {
+
+        let north = if row == 0 { self.height - 1 } else { row - 1 };
+        let south = if row == self.height - 1 { 0 } else { row + 1 };
+        let west = if column == 0 {
+            self.width - 1
+        } else {
+            column - 1
+        };
+        let east = if column == self.width - 1 {
+            0
+        } else {
+            column + 1
+        };
+
+        for i in [south, row, north].iter().cloned() {
+            for j in [west, column, east].iter().cloned() {
+                if i == row && j == column {
                     continue;
                 }
-                let c =
-                    self.cells[self.get_index((row + i) % self.height, (column + j) % self.width)];
+                let c = self.cells[self.get_index(i, j)];
                 cnt += c as u8;
             }
         }
