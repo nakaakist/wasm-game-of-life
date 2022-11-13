@@ -62,7 +62,6 @@ impl Universe {
     }
 
     pub fn tick(&mut self) {
-        let _timer = utils::Timer::new("Universe::tick");
         let mut next = self.cells.clone();
 
         for row in 0..self.height {
